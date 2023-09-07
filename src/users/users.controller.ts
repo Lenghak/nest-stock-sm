@@ -9,6 +9,7 @@ import {
   Req,
   Res,
 } from "@nestjs/common";
+
 import { Request, Response } from "express";
 
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -26,12 +27,12 @@ export class UsersController {
 
   @Get()
   findAll(@Req() request: Request, @Res() response: Response) {
-    return this.usersService.findAll(request, response);
+    return this.usersService.findAll();
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Req() req: Request, @Res() res: Response, @Param("id") id: string) {
+    return this.usersService.findOne(id);
   }
 
   @Patch(":id")

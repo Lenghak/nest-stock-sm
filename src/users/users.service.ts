@@ -1,43 +1,34 @@
-import { Injectable, Req, Res } from "@nestjs/common";
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Req,
+  Res,
+} from "@nestjs/common";
+
 import { Request, Response } from "express";
 import { PrismaService } from "src/primsa.service";
 
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { type CreateUserDto } from "./dto/create-user.dto";
+import { type UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
+  create(_createUserDto: CreateUserDto) {
     return "This action adds a new user";
   }
 
-  async findAll(@Req() _request: Request, @Res() response: Response) {
-    try {
-      const users = await this.prisma.user.findMany();
-
-      return response.status(200).json({
-        error: undefined,
-        status: 200,
-        data: users,
-        message: "Users fetched successfullly",
-      });
-    } catch (err) {
-      return response.status(500).json({
-        error: "User Fetch Error",
-        status: 500,
-        data: undefined,
-        message: err,
-      });
-    }
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return await this.prisma.user.findFirst({ where: { id } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: number, _updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
