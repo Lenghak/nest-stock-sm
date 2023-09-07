@@ -13,9 +13,9 @@ export class UsersService {
     return "This action adds a new user";
   }
 
-  findAll(@Req() _request: Request, @Res() response: Response) {
+  async findAll(@Req() _request: Request, @Res() response: Response) {
     try {
-      const users = this.prisma.user.findMany();
+      const users = await this.prisma.user.findMany();
 
       return response.status(200).json({
         error: undefined,
@@ -28,7 +28,7 @@ export class UsersService {
         error: "User Fetch Error",
         status: 500,
         data: undefined,
-        message: "There was a problem while fetching your data",
+        message: err,
       });
     }
   }

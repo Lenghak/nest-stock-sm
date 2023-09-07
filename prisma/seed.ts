@@ -1,25 +1,28 @@
-import { randUser } from "@ngneat/falso";
 import { PrismaClient } from "@prisma/client";
+
+import { randUser } from "@ngneat/falso";
 import { hashSync } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const main = async () => {
+const seed = async () => {
   try {
     await prisma.user.deleteMany();
 
-    const fakeUsers = randUser({
-      length: 10,
-    });
-
     await prisma.user.createMany({
-      data: fakeUsers.map((user) => ({
-        ...user,
+      data: randUser({
+        length: 10,
+      }).map((user) => ({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        img: user.img,
+        phone: user.phone,
         password: hashSync("password", 10),
-        address: null,
       })),
     });
-
 
     console.log(`Database has been seeded. 🌱`);
   } catch (error) {
@@ -27,6 +30,8 @@ const main = async () => {
   }
 };
 
-main().catch((err) => {
+seed().catch((err) => {
   console.warn("Error While generating Seed: \n", err);
 });
+
+console.log("seed has been called");
