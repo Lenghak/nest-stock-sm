@@ -1,23 +1,20 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Req,
-  Res,
-} from "@nestjs/common";
+import { Body, Injectable } from "@nestjs/common";
 
-import { Request, Response } from "express";
+import { type Prisma } from "@prisma/client";
+
+// import { Request, Response } from "express";
 import { PrismaService } from "src/primsa.service";
 
-import { type CreateUserDto } from "./dto/create-user.dto";
 import { type UpdateUserDto } from "./dto/update-user.dto";
+
+// import { type UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(_createUserDto: CreateUserDto) {
-    return "This action adds a new user";
+  async create(@Body() userCreateInput: Prisma.UserCreateInput) {
+    console.log(userCreateInput);
   }
 
   async findAll() {
@@ -28,11 +25,16 @@ export class UsersService {
     return await this.prisma.user.findFirst({ where: { id } });
   }
 
-  update(id: number, _updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, @Body() userUpdateDTO: UpdateUserDto) {
+    console.log(userUpdateDTO.firstName, id);
+
+    return await this.prisma.user.update({
+      where: { id },
+      data: userUpdateDTO,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.prisma.user.delete({ where: { id } });
   }
 }

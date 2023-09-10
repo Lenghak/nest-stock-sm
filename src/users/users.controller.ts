@@ -23,7 +23,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(userCreateInput: Prisma.UserCreateInput) {
+  create(@Body() userCreateInput: Prisma.UserCreateInput) {
     return this.usersService.create(userCreateInput);
   }
 
@@ -36,6 +36,7 @@ export class UsersController {
         data: user,
       });
     } catch (err) {
+      console.error(err);
       throw err;
     }
   }
@@ -64,6 +65,8 @@ export class UsersController {
     @Param("id") id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    console.log(updateUserDto);
+
     try {
       const updatedUser = await this.usersService.update(id, updateUserDto);
 
