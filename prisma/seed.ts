@@ -33,5 +33,3 @@ const seed = async () => {
 seed().catch((err) => {
   console.warn("Error While generating Seed: \n", err);
 });
-
-console.log("seed has been called");
