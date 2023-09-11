@@ -1,10 +1,10 @@
 import { Body, Injectable, Res } from "@nestjs/common";
 
 import { Response } from "express";
-import { PrismaService } from "src/primsa.service";
+import { PrismaService } from "src/services/primsa.service";
 
-import { type CreateProductDto } from "./dto/create-product.dto";
-import { type UpdateProductDto } from "./dto/update-product.dto";
+import { type CreateProductDto } from "../../models/products/dto/create-product.dto";
+import { type UpdateProductDto } from "../../models/products/dto/update-product.dto";
 
 @Injectable()
 export class ProductsService {
