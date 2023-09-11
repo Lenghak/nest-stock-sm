@@ -14,7 +14,7 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(@Body() userCreateInput: Prisma.UserCreateInput) {
-    console.log(userCreateInput);
+    console.log("");
   }
 
   async findAll() {
@@ -22,19 +22,19 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.prisma.user.findFirst({ where: { id } });
+    return await this.prisma.user.findFirst({ where: { userId: id } });
   }
 
   async update(id: string, @Body() userUpdateDTO: UpdateUserDto) {
     console.log(userUpdateDTO.firstName, id);
 
     return await this.prisma.user.update({
-      where: { id },
+      where: { userId: id },
       data: userUpdateDTO,
     });
   }
 
   async remove(id: string) {
-    return await this.prisma.user.delete({ where: { id } });
+    return await this.prisma.user.delete({ where: { userId: id } });
   }
 }

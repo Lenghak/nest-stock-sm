@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
+  userId    String   @id @unique @default(uuid())
   firstName String   @db.VarChar(256)
   lastName  String   @db.VarChar(256)
   username  String   @db.VarChar(256)
@@ -19,15 +19,15 @@ model User {
   email     String   @unique @db.VarChar(256)
   img       String   @db.Text()
   password  String   @db.VarChar(256)
-  address   Address?
+  Address   Address?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
 
 model Address {
-  id        String   @id @unique @default(uuid())
+  addressId String   @id @unique @default(uuid())
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [userId])
   street    String   @db.VarChar(256)
   city      String   @db.VarChar(256)
   province  String   @db.VarChar(256)
@@ -35,4 +35,15 @@ model Address {
   zipCode   Int      @db.Integer()
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+model Products {
+  productId          String  @id @unique @default(uuid())
+  productCode        String  @db.VarChar(256)
+  productName        String  @db.VarChar(256)
+  productDescription String  @db.VarChar(2048)
+  productType        String  @db.VarChar(256)
+  productPrice       Decimal @db.Money()
+  productCategory    String  @db.VarChar(256)
+  barCode            String  @db.VarChar(256)
 }
