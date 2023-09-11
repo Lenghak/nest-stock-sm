@@ -12,13 +12,13 @@ datasource db {
 
 model User {
   userId    String   @id @unique @default(uuid())
-  firstName String   @db.VarChar(256)
-  lastName  String   @db.VarChar(256)
-  username  String   @db.VarChar(256)
-  phone     String   @db.VarChar(256)
-  email     String   @unique @db.VarChar(256)
+  firstName String   @db.VarChar(255)
+  lastName  String   @db.VarChar(255)
+  username  String   @db.VarChar(255)
+  phone     String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
   img       String   @db.Text()
-  password  String   @db.VarChar(256)
+  password  String   @db.VarChar(255)
   Address   Address?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -28,10 +28,10 @@ model Address {
   addressId String   @id @unique @default(uuid())
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [userId])
-  street    String   @db.VarChar(256)
-  city      String   @db.VarChar(256)
-  province  String   @db.VarChar(256)
-  country   String   @db.VarChar(256)
+  street    String   @db.VarChar(255)
+  city      String   @db.VarChar(255)
+  province  String   @db.VarChar(255)
+  country   String   @db.VarChar(255)
   zipCode   Int      @db.Integer()
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -39,11 +39,11 @@ model Address {
 
 model Products {
   productId          String  @id @unique @default(uuid())
-  productCode        String  @db.VarChar(256)
-  productName        String  @db.VarChar(256)
-  productDescription String  @db.VarChar(2048)
-  productType        String  @db.VarChar(256)
+  productCode        String  @db.VarChar(255)
+  productName        String  @db.VarChar(255)
+  productDescription String  @db.VarChar(2047)
+  productType        String  @db.VarChar(255)
   productPrice       Decimal @db.Money()
-  productCategory    String  @db.VarChar(256)
-  barCode            String  @db.VarChar(256)
+  productCategory    String  @db.VarChar(255)
+  barCode            String  @db.VarChar(255)
 }

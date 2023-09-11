@@ -1,35 +1,32 @@
 import { type Prisma } from "@prisma/client";
 
-import { IsCurrency, IsEmpty, IsString, Max } from "class-validator";
+import { IsCurrency, IsString, MaxLength } from "class-validator";
 
 export class CreateProductDto implements Prisma.ProductsCreateInput {
-  @IsEmpty()
-  productId?: string;
-
   @IsString()
-  @Max(256)
+  @MaxLength(255)
   productCode: string;
 
   @IsString()
-  @Max(256)
+  @MaxLength(255)
   productName: string;
 
   @IsString()
-  @Max(2048)
+  @MaxLength(2047)
   productDescription: string;
 
   @IsString()
-  @Max(256)
+  @MaxLength(255)
   productType: string;
 
   @IsCurrency()
   productPrice: string;
 
   @IsString()
-  @Max(256)
+  @MaxLength(255)
   productCategory: string;
 
   @IsString()
-  @Max(256)
+  @MaxLength(255)
   barCode: string;
 }
