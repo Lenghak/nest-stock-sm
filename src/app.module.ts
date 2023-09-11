@@ -4,7 +4,7 @@ import {
   type NestModule,
 } from "@nestjs/common";
 
-import { AppMiddleware } from "../middleware/app.middleware";
+import { AppMiddleware } from "./middleware/app.middleware";
 import { ProductsModule } from "./products/products.module";
 
 @Module({
