@@ -17,7 +17,7 @@ model User {
   username  String   @db.VarChar(255)
   phone     String   @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
-  img       String   @db.Text()
+  img       String?  @db.Text()
   password  String   @db.VarChar(255)
   Address   Address?
   createdAt DateTime @default(now())
