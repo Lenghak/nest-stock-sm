@@ -4,12 +4,13 @@ import {
   type NestModule,
 } from "@nestjs/common";
 
+import { AuthModule } from "./auth/auth.module";
 import { AppMiddleware } from "./middleware/app.middleware";
 import { ProductsModule } from "./products/products.module";
 import { UsersModule } from "./users/users.module";
 
 @Module({
-  imports: [ProductsModule, UsersModule],
+  imports: [ProductsModule, UsersModule, AuthModule],
   controllers: [],
   providers: [],
 })
