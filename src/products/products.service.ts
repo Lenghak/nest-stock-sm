@@ -1,4 +1,12 @@
-import { Body, Injectable, Res } from "@nestjs/common";
+import {
+  Body,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Res,
+} from "@nestjs/common";
+
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 import { PrismaService } from "@/primsa.service";
 import { type CreateProductDto } from "@/products/dto/create-product.dto";
@@ -67,6 +75,11 @@ export class ProductsService {
         data: updatedProduct,
       });
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2025")
+          throw new HttpException("Product Not Found!", HttpStatus.NOT_FOUND);
+      }
+
       throw err;
     }
   }
@@ -81,6 +94,11 @@ export class ProductsService {
         data: deletedProduct,
       });
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2025")
+          throw new HttpException("Product Not Found!", HttpStatus.NOT_FOUND);
+      }
+
       throw err;
     }
   }
