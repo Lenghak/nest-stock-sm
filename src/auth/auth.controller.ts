@@ -13,9 +13,9 @@ export class AuthController {
     private readonly jwtService: JwtService,
   ) {}
 
-  @Post("register")
-  async register(@Body() createUserDto: CreateUserDto) {
-    return await this.authService.register(createUserDto);
+  @Post("sign-up")
+  async signUp(@Body() createUserDto: CreateUserDto) {
+    return await this.authService.signUp(createUserDto);
   }
 
   @Post("sign-in")
