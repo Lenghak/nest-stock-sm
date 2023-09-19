@@ -27,21 +27,37 @@ export class UsersController {
 
   @Get()
   async findAll() {
-    return await this.usersService.findAll();
+    try {
+      return await this.usersService.findAll();
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.usersService.findOne(id);
+    try {
+      return this.usersService.findOne(id);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    try {
+      return this.usersService.update(id, updateUserDto);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Delete(":id")
   async remove(@Param("id") id: string) {
-    return await this.usersService.remove(id);
+    try {
+      return await this.usersService.remove(id);
+    } catch (err) {
+      throw err;
+    }
   }
 }
