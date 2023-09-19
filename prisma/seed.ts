@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 import {
   randAddress,
-  randFullAddress,
   randProduct,
   randProductMaterial,
   randState,
