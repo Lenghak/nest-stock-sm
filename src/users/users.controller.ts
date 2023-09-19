@@ -1,12 +1,19 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
 } from "@nestjs/common";
+
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime/library";
 
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -39,15 +46,25 @@ export class UsersController {
     try {
       return this.usersService.findOne(id);
     } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError)
+        throw new NotFoundException(err.meta.cause);
+
       throw err;
     }
   }
 
   @Patch(":id")
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return this.usersService.update(id, updateUserDto);
+      return await this.usersService.update(id, updateUserDto);
     } catch (err) {
+      // else throw the erro
+      if (err instanceof PrismaClientKnownRequestError)
+        throw new NotFoundException(err.meta.cause);
+
+      if (err instanceof PrismaClientValidationError)
+        throw new BadRequestException(err.message);
+
       throw err;
     }
   }

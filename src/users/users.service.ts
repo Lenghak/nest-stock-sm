@@ -19,10 +19,12 @@ export class UsersService {
     const alreadyExistUser = await this.prisma.user.findUnique({
       where: {
         email: createUserDto.email,
+        OR: [{ email: createUserDto.email }],
       },
     });
 
-    if (alreadyExistUser) throw new ConflictException("User already exists");
+    if (alreadyExistUser)
+      throw new ConflictException("The email or the username is already exist");
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -40,10 +42,14 @@ export class UsersService {
   }
 
   async findAll(): Promise<Omit<User, "passwod">[]> {
-    return (await this.prisma.user.findMany({ take: 10 })).map((user) => {
-      delete user.password;
-      return user;
-    });
+    const users = (await this.prisma.user.findMany({ take: 10 })).map(
+      (user) => {
+        delete user.password;
+        return user;
+      },
+    );
+
+    return users;
   }
 
   async findOne(id: string): Promise<Omit<User, "passwod">> {
@@ -68,6 +74,7 @@ export class UsersService {
 
   async remove(id: string): Promise<Omit<User, "passwod">> {
     const user = await this.prisma.user.delete({ where: { userId: id } });
+
     delete user.password;
 
     return user;
