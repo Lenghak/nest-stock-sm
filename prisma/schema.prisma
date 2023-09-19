@@ -15,7 +15,7 @@ model User {
   firstName String   @db.VarChar(255)
   lastName  String   @db.VarChar(255)
   username  String   @db.VarChar(255)
-  phone     String   @db.VarChar(255)
+  phone     String?  @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
   img       String?  @db.Text()
   password  String   @db.VarChar(255)
