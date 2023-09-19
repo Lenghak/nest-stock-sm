@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
 import {
+  randAddress,
+  randFullAddress,
   randProduct,
   randProductMaterial,
+  randState,
   randUser,
   randUuid,
   randZipCode,
@@ -13,6 +16,7 @@ const prisma = new PrismaClient();
 
 const seed = async () => {
   try {
+    await prisma.address.deleteMany();
     await prisma.user.deleteMany();
     await prisma.products.deleteMany();
 
@@ -20,6 +24,7 @@ const seed = async () => {
       data: randUser({
         length: 10,
       }).map((user) => ({
+        userId: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -27,6 +32,19 @@ const seed = async () => {
         img: user.img,
         phone: user.phone,
         password: hashSync("password", 10),
+      })),
+    });
+
+    const users = await prisma.user.findMany({ take: 10 });
+
+    await prisma.address.createMany({
+      data: randAddress({ length: 10 }).map((address, index) => ({
+        userId: users[index].userId,
+        city: address.city,
+        country: address.country,
+        street: address.street,
+        province: randState(),
+        zipCode: address.zipCode,
       })),
     });
 
