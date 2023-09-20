@@ -30,15 +30,11 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    console.log();
-
     return true;
   }
 
   private extractToken(request: Request): string | undefined {
     const [type, token] = request.headers.authorization.split(" ") ?? [];
-
-    console.log(type, token);
 
     return type === "Bearer" ? token : undefined;
   }
