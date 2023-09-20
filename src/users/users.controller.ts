@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 
 import {
@@ -15,11 +16,14 @@ import {
   PrismaClientValidationError,
 } from "@prisma/client/runtime/library";
 
+import { AuthGuard } from "@/auth/guard/auth.guard";
+
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 
 @Controller("users")
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
