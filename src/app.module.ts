@@ -6,11 +6,12 @@ import {
 
 import { AuthModule } from "./auth/auth.module";
 import { AppMiddleware } from "./middleware/app.middleware";
+import { PrismaModule } from "./prisma.module";
 import { ProductsModule } from "./products/products.module";
 import { UsersModule } from "./users/users.module";
 
 @Module({
-  imports: [ProductsModule, UsersModule, AuthModule],
+  imports: [PrismaModule, ProductsModule, UsersModule, AuthModule],
   controllers: [],
   providers: [],
 })
