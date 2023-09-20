@@ -3,25 +3,17 @@ import { type JwtService } from "@nestjs/jwt";
 
 import { env } from "@/env/server";
 import { PrismaService } from "@/primsa.service";
-import { type CreateUserDto } from "@/users/dto/create-user.dto";
-import { UsersService } from "@/users/users.service";
 import { compare } from "bcryptjs";
-
-import { type AuthLoginDto } from "./dto/authLogin.dto";
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private prisma: PrismaService,
-    private usersService: UsersService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  async signUp(createUserDTO: CreateUserDto) {
-    return await this.usersService.create(createUserDTO);
-  }
-
-  async signIn(authLoginDto: AuthLoginDto, jwtService: JwtService) {
-    const user = await this.validate(authLoginDto);
+  async signIn(
+    authSignInDto: { email: string; password: string },
+    jwtService: JwtService,
+  ) {
+    const user = await this.validate(authSignInDto);
 
     const payload = {
       sub: {
@@ -51,12 +43,14 @@ export class AuthService {
     };
   }
 
-  async validate(authLoginDto: AuthLoginDto) {
+  async validate(authSignInDto: { email: string; password: string }) {
     const user = await this.prisma.user.findUnique({
-      where: { email: authLoginDto.email },
+      where: { email: authSignInDto.email },
     });
 
-    if (user && (await compare(authLoginDto.password, user.password))) {
+    console.log(user);
+
+    if (user && (await compare(authSignInDto.password, user.password))) {
       delete user.password;
       return user;
     }
