@@ -29,6 +29,7 @@ export class CreateUserDto {
   @IsPhoneNumber()
   @MaxLength(255)
   @IsNotEmpty()
+  @IsOptional()
   phone: string;
 
   @IsString()
