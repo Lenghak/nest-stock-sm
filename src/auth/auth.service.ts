@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { type JwtService } from "@nestjs/jwt";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
 import { env } from "@/env/server";
 import { PrismaService } from "@/primsa.service";
@@ -7,12 +7,11 @@ import { compare } from "bcryptjs";
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
-
-  async signIn(
-    authSignInDto: { email: string; password: string },
-    jwtService: JwtService,
-  ) {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,
+  ) {}
+  async signIn(authSignInDto: { email: string; password: string }) {
     const user = await this.validate(authSignInDto);
 
     const payload = {
@@ -24,12 +23,12 @@ export class AuthService {
       },
     };
 
-    const accesstoken = await jwtService.signAsync(payload, {
+    const accesstoken = await this.jwtService.signAsync(payload, {
       expiresIn: "1h",
       secret: env.JWT_SECRET,
     });
 
-    const refreshtoken = await jwtService.signAsync(payload, {
+    const refreshtoken = await this.jwtService.signAsync(payload, {
       expiresIn: "7d",
       secret: env.JWT_REFRESH_TOKEN,
     });
@@ -47,8 +46,6 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: authSignInDto.email },
     });
-
-    console.log(user);
 
     if (user && (await compare(authSignInDto.password, user.password))) {
       delete user.password;
