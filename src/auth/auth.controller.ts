@@ -4,6 +4,7 @@ import { CreateUserDto } from "@/users/dto/create-user.dto";
 import { UsersService } from "@/users/users.service";
 
 import { AuthService } from "./auth.service";
+import { AuthSignInDto } from "./dto/authSignIn.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
   }
 
   @Post("sign-in")
-  async signIn(@Body() authSignInDto: { email: string; password: string }) {
+  async signIn(@Body() authSignInDto: AuthSignInDto) {
     return await this.authService.signIn(authSignInDto);
   }
 }

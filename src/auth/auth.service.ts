@@ -1,9 +1,11 @@
-import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
 import { env } from "@/env/server";
 import { PrismaService } from "@/primsa.service";
 import { compare } from "bcryptjs";
+
+import { type AuthSignInDto } from "./dto/authSignIn.dto";
 
 @Injectable()
 export class AuthService {
@@ -11,7 +13,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
   ) {}
-  async signIn(authSignInDto: { email: string; password: string }) {
+  async signIn(authSignInDto: AuthSignInDto) {
     const user = await this.validate(authSignInDto);
 
     const payload = {
@@ -42,7 +44,7 @@ export class AuthService {
     };
   }
 
-  async validate(authSignInDto: { email: string; password: string }) {
+  async validate(authSignInDto: AuthSignInDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: authSignInDto.email },
     });
